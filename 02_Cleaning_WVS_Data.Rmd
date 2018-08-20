@@ -23,7 +23,7 @@ Security_data <- read.csv("Security_Raw_Data.csv")
 Science_data  <- read.csv("Science_Raw_Data.csv")
 SD_data       <- read.csv("SD_Raw_Data.csv")
 
-# We need the names in order to merge it with a world map. In order for the merge to work, we had to change the names to match the world map shape file. 
+# We need the names in order to merge it with other files we need to have the country names. 
 Country_Names <-read.csv("Country_Code_Names.csv")
 Country_Names <-Country_Names[,c("Country.Code", "Country.Title")]
 ```
@@ -72,7 +72,7 @@ RM_Ordinal_Data <- read.csv("RM_Ordinal_subset.csv")
 #Nation questions are all categorical
 #Security questions are all categorical
 Science_Ordinal_Data <- read.csv("Science_Ordinal_subset.csv")
-#Socio-Demographic(SD) questions are all categorical
+SD_Ordinal_Data <- read.csv("SD_Ordinal_subset.csv")
 
 Ordinal_DF_List <- list(PFL_Ordinal_Data,  
                         Work_Ordinal_Data, 
@@ -336,7 +336,7 @@ Cat_Precentage_DFs_list<- list(V4=V4, V5=V5, V6=V6, V7=V7, V8=V8, V9=V9, V10=V10
                                V222=V222, V223=V223, V224= V224,V225=V225, V226=V226, V227=V227,
                                V143=V143, V145=V145, V146=V146, V147=V147, V148=V148, V149=V149, V150=V150, V151=V151, 
                                V153=V153, V154=V154, V155=V155, V156=V156,
-                               V211=V211, V103=V103, V104=V104, v106=V106, V107=V107,
+                               V211=V211, V103=V103, V104=V104, V105=V105, v106=V106, V107=V107,
                                V212=V212, V213=V213, V214=V214, V216=V216, V243=V243, V244=V244, V245=V245, V246=V246,
                                V170=V170, V171=V171, V172=V172, V173=V173, V174=V174, V175=V175, V176=V176, V177=V177, 
                                V178=V178, V179=V179, v180=V180, V181=V181, V182=V182, v183=V183, V184=V184, V185=V185, 
@@ -358,21 +358,8 @@ country.codes <- sumbyresponse_all$Group.1
 
 Contained within this dataframe are the variables representing the precentage of people from each nation who did not respond to a questions as well as those who were not asked the questions. We want to remove countries and questions that have large amounts of administrative missingness. No repsonse is considered a choice be the respondant and could introduce interesting patterns. Therefore, the true missingness or no response catgory is kept in the analysis. We still created a separate dataframe inorder to visualize the missingness of both kinds. 
 
-#Categorical Missing Data Analysis
-```{r Categorical Missing - No Response Data, eval=FALSE}
-#Making a dataframe of columns for the missing responses. These cells are coded as "no response" in the codebook. 
-Missing_DF <- c()
-for(df in Cat_Precentage_DFs_list){
-  Missing_DF_add <- df[,11] 
-  Missing_DF <- cbind(Missing_DF, Missing_DF_add)
-}
-Cat_Question_Column_Names_Missing <- names(Cat_Precentage_DFs_list)
-colnames(Missing_DF) <- Cat_Question_Column_Names_Missing
-rownames(Missing_DF) <- country.codes 
-```
-
 #AdminNA Data
-```{r Visualizing Categorical AdminNA Data}
+```{r Categorical AdminNA Data}
 #Making a dataframe of columns for the Administravitive missing (AdminNA or -6) responses - 
 AdminNA_DF <- c()
 for(df in Cat_Precentage_DFs_list){
@@ -418,7 +405,7 @@ Cat_Precentage_DFs <- cbind(V4,V5,V6,V7,V8,V9,V10,V11,V12,V13,V14,V15,V16,V17,V1
                            V113,V114,V115,V116,V117,V118,V119,V120,V121,V122,V123,V124,V126,V127,V128,V129,V130,V142,
                            V217,V218,V219,V220,V221,V222,V223,V224,V225,V226,V227,
                            V143,V145,V146,V147,V148,V149,V150,V151,V153,V154,V155,V156,
-                           V211,V103,V104,V106,V107,V212,V213,V214,V216,V243,V244,V245,V246,
+                           V211,V103,V104,V105,V106,V107,V212,V213,V214,V216,V243,V244,V245,V246,
                            V170,V171,V172,V173,V174,V175,V176,V177,V178,V179,V180,V181,V182,V183,V184,V185,V186,V187,V188,
                            V189,V190,V191,
                            V74B, V90, V91, V92, V93, V94, 
@@ -1365,7 +1352,7 @@ Cat_Precentage_DFs <- cbind(V4,V5,V6,V7,V8,V9,V10,V11,V12,V13,V14,V15,V16,V17,V1
                            V113,V114,V115,V116,V117,V118,V119,V120,V121,V122,V123,V124,V126,V127,V128,V129,V130,V142,
                            V217,V218,V219,V220,V221,V222,V223,V224,V225,V226,V227,
                            V143,V145,V146,V147,V148,V149,V150,V151,V153,V154,V155,V156,
-                           V211,V103,V104,V106,V107,V212,V213,V214,V216,V243,V244,V245,V246,
+                           V211,V103,V104,V105,V106,V107,V212,V213,V214,V216,V243,V244,V245,V246,
                            V170,V171,V172,V173,V174,V175,V176,V177,V178,V179,V180,V181,V182,V183,V184,V185,V186,V187,V188,
                            V189,V190,V191)
 
@@ -1377,7 +1364,7 @@ Cat_Question_Count <- list(V4,V5,V6,V7,V8,V9,V10,V11,V12,V13,V14,V15,V16,V17,V18
                            V113,V114,V115,V116,V117,V118,V119,V120,V121,V122,V123,V124,V126,V127,V128,V129,V130,V142,
                            V217,V218,V219,V220,V221,V222,V223,V224,V225,V226,V227,
                            V143,V145,V146,V147,V148,V149,V150,V151,V153,V154,V155,V156,
-                           V211,V103,V104,V106,V107,V212,V213,V214,V216,V243,V244,V245,V246,
+                           V211,V103,V104,V105, V106,V107,V212,V213,V214,V216,V243,V244,V245,V246,
                            V170,V171,V172,V173,V174,V175,V176,V177,V178,V179,V180,V181,V182,V183,V184,V185,V186,V187,V188,
                            V189,V190,V191)
 
@@ -1432,23 +1419,17 @@ WVS_Data_Precentages4<- WVS_Data_Precentages3[, -grep("Know", colnames(WVS_Data_
 #write.csv(WVS_Data_Precentages, file = "WVS_Data_Percentages.csv")
 ```
 
-
-#Central Tendency Variables
-Using the precentage dataframes, 
-```{r}
-
-```
-
-
-
-#Individual Data Analysis
+#Individual Data - Cleaned
 Now that we know which variables we would like to remove, we can create a dataframe with the individual responses and the varaibles of interest. 
 ```{r}
 #This dataframe will contain all the variables
 Individual_Data <- merge(Updated_Categorical_data, Updated_Ordinal_data, by.x = "X", by.y = "X")
 
-#Similar to the aggregate data we want to change the responses that are don't know, missing, or were to asked to NA
+#V161,V162,V163 were not in the Updated Ordinal List because they are on the a 5 pt scale instead of 10.
+Individual_Data<- merge(Individual_Data, PFL_5Ordinal_Data,
+                           by.x = "X", by.y = "X")
 
+#Similar to the aggregate data we want to change the responses that are don't know, missing, or were to asked to NA
 #install.packages("car", repos = 'http://cran.us.r-project.org')
 library(car)
 
@@ -1456,5 +1437,491 @@ RecodetoNA<- function(QuestionColName){
   QuestionColName<- recode(QuestionColName, "c(-1,-2,-6) = NA")
 }
 Individual_Data  <- as.data.frame(apply(Individual_Data ,2,RecodetoNA))
+
+
+#Questions to Remove based on national sensitivity analysis.
+
+#Due to high precentages of AdminNA remove questions: V74B,V90,V91,V92,V93,V94,v160A,160B,v160C
+#v160D,v160E,v160F,v160G,v160H,v160I,v160J,V217_ESMA,V218_ESMA,V224_ESMA,V220_ESMA,V221_ESMA,V222_ESMA,
+#V228A,V228B,V228C,V228D,V228E,V228F,V228G,V228H,V228I,V228J,V228K,V243_AU,V244_AU,V56_NZ,V203A,V207A
+
+#Due to high precentages of Missing remove questions - none
+
+#Due to high precentages of Don'tKnow remove questions: V133,V140,V193,V152
+
+#Questions 144 (religion), 215 (political organizations - 18 variables), 
+#247 (language) were removed beause they had to many categories. 
+#219_ESMA was removed because it was not answered by any of the 60 countries.
+#228 and 228_2 were removed because they are related to political parties in specific countries
+
+#Remove categorical SD questions
+
+#Make one DF with all the single question dataframes to remove
+
+Cleaned_Individual_Data<- Individual_Data[,-which(names(Individual_Data) %in% c(
+"V144", "V247","V219_ESMA", "V228", "V228_2", 
+"V74B","V90","V91","V92","V93","V94",
+"V160A","V160B","V160C","V160D","V160E", "V160F","V160G","V160H","V160I","V160J",
+"V217_ESMA","V218_ESMA","V224_ESMA","V220_ESMA","V221_ESMA","V222_ESMA",
+"V228A","V228B", "V228C","V228D","V228E","V228F","V228G","V228H","V228I","V228J", "V228K",
+"V243_AU","V244_AU","V56_NZ","V203A","V207A",
+"V133","V140","V193","V152",
+"V215_01","V215_02","V215_03","V215_04","V215_05","V215_06","V215_07",
+"V215_08","V215_09","V215_10","V215_11","V215_12","V215_13","V215_14","V215_15","V215_16","V215_17","V215_18",
+"V57","V58","V229","V230","V234","V235","V236","V237","V238","V240","V248","V250","V253","V254","V255","V256",
+"V2.y","V258.y"))]
+
+#We need to remove the countries chosen above
+countries_to_remove_ind <-  c(414, 634,48,818)
+Cleaned_Individual_Data<- Cleaned_Individual_Data[-which(Cleaned_Individual_Data$V2.x %in% c(414,634,48,818)),]
+
+#remove row counting columns
+Individual_Data_Final <- Cleaned_Individual_Data[,-c(1)]
+#write.csv(Individual_Data_Final, "Individual_Data_FINAL.csv")
+
+Dichotomous_Individual_Data <- Individual_Data_Final[,c("V2.x","V258.x","V12","V13", "V14", "V15", 
+                                                       "V16", "V17", "V18", 
+                                                       "V19",  "V20", "V21", 
+                                                       "V22", "V24",
+                                                       "V36","V37","V38","V39", "V40", 
+                                                       "V41","V42","V43","V44", 
+                                                       "V66",
+                                                       "V82","V83","V148","V149",
+                                                       "V176", "V177",
+                                                       "V178","V179","V180","V187","V243",
+                                                       "V244","V245", "V246")]
+
+Nominal_Individual_Data <- Individual_Data_Final[,c("V2.x","V258.x",
+                                              "V25", "V26","V27", "V28","V29", "V30",
+                                              "V31", "V32","V33", "V34","V35",
+                                              "V60","V61","V62","V63","V64","V65",
+                                                                   "V80","V81","V147","V150","V151")]
+
+
+Ordered_Individual_Data <- Individual_Data_Final[,!colnames(Individual_Data_Final) %in% c("V12","V13", "V14", "V15", 
+                                                       "V16", "V17", "V18", 
+                                                       "V19",  "V20", "V21", 
+                                                       "V22", "V24",
+                                                       "V36","V37","V38","V39", "V40", 
+                                                       "V41","V42","V43","V44", 
+                                                       "V66",
+                                                       "V82","V83","V148","V149",
+                                                       "V176", "V177",
+                                                       "V178","V179","V180","V187","V243",
+                                                       "V244","V245", "V246",
+                                                       "V25", "V26","V27", "V28","V29", "V30",
+                                                       "V31", "V32","V33", "V34","V35",
+                                                       "V60","V61","V62","V63","V64","V65",
+                                                       "V80","V81","V147","V150","V151",
+                                                "V2.x","V258.x")]
+
+#reorder the columns to put country code and weight first
+Ordered_Individual_Data <- cbind(Individual_Data_Final$V2.x,Individual_Data_Final$V258.x,Ordered_Individual_Data)
+
+names(Ordered_Individual_Data)[names(Ordered_Individual_Data) == 'Individual_Data_Final$V2.x'] <- 'V2.x'
+names(Ordered_Individual_Data)[names(Ordered_Individual_Data) == 'Individual_Data_Final$V258.x'] <- 'V258.x'
+
+Country_Codes <- unique(Individual_Data_Final$V2.x)
+
+V258.x <- Individual_Data_Final$V258.x
+#write.csv(V258.x, "Weight_Vector.csv")
+
+Individual_MIRTData<- cbind(Nominal_Individual_Data[,c(1:24)], 
+                            Dichotomous_Individual_Data[,c(3:38)], Ordered_Individual_Data[,c(3:157)])
+
+timestamp <- format(Sys.time(), "%Y%m%d_%H%M%S") 
+filename <-  paste("Individual_MIRTData",timestamp,".csv",sep="")
+write.csv(Individual_MIRTData, file=filename)
 ```
+
+Let's create a dataframe with a subset of countries that we know to be similar such as countries with highGDP - Austrailia, Germany, Japan, Spain, Sweden, and the US.
+```{r}
+WealthySubset_Individual_MIRTData <-Individual_MIRTData[which(Individual_MIRTData$V2.x %in% c(36,276,392,724,752,840)),]
+unique(WealthySubset_Individual_MIRTData$V2.x)
+
+write.csv(WealthySubset_Individual_MIRTData, "WealthySubset_Individual_MIRTData.csv")
+```
+
+
+#Central Tendency Variables
+We have broken the 213 variables into three different types of questions: ordered, nominal and dichotomous. We need to calculate a central tendency value for each of these variables. For ordered variables, we could either calculate the median or the mean. For the nominal and dichotomous questions, our only option is the mode. 
+
+##Analyzing the Characteristics of Ordered Variables: Normality Test
+If we assume that the ordered variables can be represented in as a metrical variables, then we can look at the normality. If the variables generally represent a normal distribution then we are justified in using the mean of the variables; if they are not, the median will be a better estimation of central tendency.
+```{r Normality Test}
+#Multivariate Normality - requires variables to be independent
+#Code Source: https://cran.r-project.org/web/packages/MVN/vignettes/MVN.pdf
+#install.packages("nortest")
+library("nortest")
+normality_test <- apply(Ordered_Individual_Data[,c(3:157)], 2, ad.test)
+
+#Need to determine which variables have significant p-values
+normality_p.values <- c()
+variable_names <- colnames(Ordered_Individual_Data[,c(3:157)])
+
+for(col in c(1:155)){
+  variable_normality <- normality_test[[col]]
+  p.value <- variable_normality$p.value
+  normality_p.values <- cbind(normality_p.values, p.value)
+}
+
+colnames(normality_p.values) <- variable_names
+
+#p-values less than 0.05 mean the variables are non-normal
+nonnormal_variables <- t(normality_p.values)
+nonnormal_variables[nonnormal_variables > 0.01] = NA
+nonnormal_variables <- as.data.frame(t(na.omit(nonnormal_variables)))
+
+normal_variables <- t(normality_p.values)
+normal_variables[normal_variables < 0.01] = NA
+normal_variables <- as.data.frame(t(na.omit(normal_variables)))
+```
+All of the ordered variables are not normal; therefore we will continue our analysis with the median because it is more resistant to outliers and non-normal data.
+
+#Calculating Median for Ordered Questions
+Not all questions in the WVS have categorical responses. Some questions ask respondants to respond on an ordered or likert scale. Finding the country median of these questions allows us to understand how countries are distributed across the same ordered scale. In order to do this we need to aggregate the data into weighted sums for each country. The Weighted_Sums_Likerts function returns a dataframe with countries as the rows and the columns as the response categories ranging from 1 to 10 depending on the number of ordered categories. NOTE: we have already removed some questions do to the results of a sensitivity analysis. Therefore, we do not look at the I don't know, missing, or not answered columns and they are coded as NA.
+```{r Ordered Count Function}
+Weighted_Sums_Likert_subset <- function(aColumn){
+ 
+  miss=0
+  r1=0
+  r2=0
+  r3=0
+  r4=0
+  r5=0
+  r6=0
+  r7=0
+  r8=0
+  r9=0
+  r10=0
+  rneg1=0
+  
+  count = 1
+  
+for (value in aColumn){
+    
+    if(is.na(value)){
+      miss = miss + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 1){
+      r1 = r1 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 2){
+      r2 = r2 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 3){
+      r3 = r3 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 4){
+      r4 = r4 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 5){
+      r5 = r5 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 6){
+      r6 = r6 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 7){
+      r7 = r7 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 8){
+      r8 = r8 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 9){
+      r9 = r9 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    if(value == 10){
+      r10 = r10 + Ordered_Individual_Data$V258.x[count]
+      next
+    }
+    count = count + 1
+  }
+  #Note that NA responses not included in subset. 
+  dataofresponses_subset<-cbind(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10) 
+  
+  #each column is a response sum, each row is coutry
+  return(dataofresponses_subset)
+}
+```
+
+To determine the median of the ordered questions, we will loop through every column of the orered question dataframe and sum up the number of people who choose a particular value. We will determine the median by finding where the cummulative summative is at or above 50%. 
+```{r Median Calculation, warning=FALSE}
+Ordinal_Question_Column_Names = names(Ordered_Individual_Data)[c(3:157)] #first two columns are country and weight
+Ordinal_Question_Column_Names_Count <- c()
+Ordered_Medians <- data.frame(Country_Codes)
+
+for(i in 1:155){ 
+  Question_Name <- paste(Ordinal_Question_Column_Names[i], "Count", sep = "_")
+  Ordinal_Question_Column_Names_Count <- c(Ordinal_Question_Column_Names_Count, Question_Name)
+  }
+count = 1
+
+# Loop through every question to create a dataframe with responses as columns and countries as rows - then determine the median and create a dataframe of countries as rows and questions as columns - each cell is a median for that question/country
+  for(col in Ordinal_Question_Column_Names){
+        dataofresponses_country_subset <- aggregate(Ordered_Individual_Data[,col], 
+                                   by=list(Ordered_Individual_Data$V2.x), 
+                                   Weighted_Sums_Likert_subset, simplify=FALSE)
+    #To transform the dataframe into countries as rows and columns as categories
+     Ordinal_Question_Counts <-c()
+   for(i in 1:56){
+      Count_Ordinal <-t(as.data.frame(dataofresponses_country_subset$x[i]))
+      Ordinal_Question_Counts <- cbind(Ordinal_Question_Counts, Count_Ordinal)
+   }
+  
+   Ordinal_Question_Counts <- t(Ordinal_Question_Counts)
+   row.names(Ordinal_Question_Counts) <- as.character(dataofresponses_country_subset$Group.1)
+   colnames(Ordinal_Question_Counts) <- c( "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+
+   #Add up rows to determine total number of people from each country who answered each question
+   country_sums <- as.data.frame(apply(Ordinal_Question_Counts, 1, sum)) 
+   precentages <-data.frame() #this dataframe will store the precentage of people who answered each category
+     
+   for(i in 1:56){
+      if(country_sums$`apply(Ordinal_Question_Counts, 1, sum)`[i]==0){
+       precentages <- rbind(precentages, c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
+       }else
+         {percent <- round(Ordinal_Question_Counts[i,]/country_sums$`apply(Ordinal_Question_Counts, 1, sum)`[i]*100,3)
+         precentages <- rbind(precentages, percent)
+     }
+     }
+
+    colnames(precentages) <- c( "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+    rownames(precentages) = rownames(Ordinal_Question_Counts)
+    Ordinal_Percentages<- precentages 
+    
+    #This dataframe shows the countries as rows and the weighted response percentages as the columns 
+    #In order to determine the median we are going to use the cummulative sum function
+    Cummulative_Sums <- apply(Ordinal_Percentages, 1, cumsum)
+    Cummulative_Sums <-as.data.frame(Cummulative_Sums)
+
+    #to determine the median we need the first value above 50%
+    Cummulative_Sums_subset <-t(na.omit(t(Cummulative_Sums)))
+   
+    Ordinal_Medians <-data.frame()
+    
+    Manual_Median <- function (aColumn) {
+      for(i in 1:10){  
+        if(aColumn[i] >= 50){
+            Country_Median <- i
+            Ordinal_Medians <- rbind(Ordinal_Medians, Country_Median)
+            break
+            }
+      }
+    return(Ordinal_Medians)
+    }
+    
+#in cummulative sums subset - categories are rows and the countries are columns - 
+#so to find the median, the columns should be added starting with the first row. 
+    Ordinal_Median_Country <- as.data.frame(t(as.data.frame(apply(Cummulative_Sums_subset, 2, Manual_Median))))
+    rownames(Ordinal_Median_Country) <- colnames(Cummulative_Sums_subset)
+    
+    #Ordered_Medians - dataframe tells you the category which is the median not the precentage - 
+    Ordered_Medians <- merge(Ordered_Medians, Ordinal_Median_Country, 
+                             by.x="Country_Codes",by.y = 0, all = TRUE, warnings=F)
+    
+    #Need to store the precent dataframe under question name
+    colnames(Ordinal_Percentages) <- paste(Ordinal_Question_Column_Names[count], 
+                                              colnames(Ordinal_Percentages), sep = "_")
+   assign(Ordinal_Question_Column_Names[count], Ordinal_Percentages)
+   
+   #To store the count dataframe under question name
+   assign(Ordinal_Question_Column_Names_Count[count],  Ordinal_Question_Counts)
+   count = count+1
+}#ending for loop to start a new question 
+```
+
+#Formatting Median Data Frame
+```{r Median Dataframe}
+#Now to add column names to the data frame of medians we just created. 
+colnames(Ordered_Medians)<-c("Country Codes", Ordinal_Question_Column_Names)
+
+#need to remove questions where all the answers are the same. 
+Variance_NA <- function(aCol){var(aCol, na.rm = FALSE)}
+Median_Variance <- as.data.frame(apply(Ordered_Medians[,c(2:156)], 2, Variance_NA))
+Median_Variability <- apply(Ordered_Medians[,c(2:156)], 2, unique)
+
+#The median is the same for every country for variable V4 and V102; therefore we will remove them because it does not tell us about differences between nations. 
+
+Ordered_Medians_Final <- Ordered_Medians[,c(1,3:26,28:156)]
+rownames(Ordered_Medians_Final)<-Ordered_Medians_Final$`Country Codes`
+Ordered_Medians_Final <- Ordered_Medians_Final[,c(2:154)]
+```
+
+#Imputing Missing Data
+```{r Missingingness in Data}
+#Double check that there are no NaN - not a number - cells in the data set.
+test_missingness <- as.data.frame(summary(apply(Ordered_Medians_Final, 2,is.nan)))
+
+#PCA function will not operate with NA so there are three choices
+   #Eliminate the countries that have missing values, this takes us from 54 to 35 (we will not prusue this)
+   #Eliminate the questions that have missing values, this takes us from 166 to 125 variables (we will not prusue this)
+   #Estimate or impute the missing values based on the rest of the variable
+library(mice)
+init = mice(Ordered_Medians_Final, maxit=0) 
+meth = init$method
+predM = init$predictorMatrix
+
+set.seed(103)
+imputed = mice(Ordered_Medians_Final, method=meth, predictorMatrix=predM, m=5, printFlag = FALSE)
+#Create a new data set with the imputed data
+Imputed_Ordered_Data<- complete(imputed)
+```
+
+#Median and Mode Analysis - Central Tendency Variables
+For questions that are not ordered, we use the mode to represent a country's view on a particular question. With the count dataframes we can determine the mode of each question for each country. However, we built function to calculate mode in combination with the aggregate function to achieve the same thing. 
+```{r Mode Calculations}
+# The table function counts the number of responses of each types
+# the sort function sorts the table from low to high
+# the tail functions gives you the last column or the highest count response
+
+Mode <- function(aColumn){
+  mode=names(tail(sort(table(aColumn)),1))
+  return(mode)
+}
+
+Mode_Example <- aggregate(Nominal_Individual_Data[,10], 
+          by=list(Nominal_Individual_Data$V2.x), 
+          Mode)
+#interestingly - it's the same response category for all countries. 
+Mode_Aggregate = function(aCol){aggregate(aCol, by=list(Nominal_Individual_Data$V2.x), Mode)}
+
+Modes <- apply(Nominal_Individual_Data[,c(3:24)],2,Mode_Aggregate)
+Modes_Nominal<- as.data.frame(Modes) #this dataframe containes the modes for each questions of the nominal data
+Modes_Nominal_Clean<- Modes_Nominal[,c(2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44)]
+rownames(Modes_Nominal_Clean) <- Modes_Nominal$V60.Group.1
+
+#we only want to retain those that have varying values for countries, so let's check that their is variety with the unique function
+Nominal_Modes_Unique <- apply(Modes_Nominal_Clean, 2, unique)
+#we can tell that we need to remove V26-V35, and V60 - since all the countries have a mode of 1.
+Nominal_Modes_Final <- Modes_Nominal_Clean[,-c(2:12)]
+
+summary(Nominal_Individual_Data$V81)
+V81.x <- as.data.frame(Mode_Aggregate(Nominal_Individual_Data$V81))
+V81.x$x[[49]]<- NA
+V81_Numeric <- apply(V81.x, 2, as.numeric)
+Nominal_Modes_Final$V81.x[[49]]<-NA
+```
+
+```{r}
+#we can repeat with the dichotomous data
+Modes_Dich<- apply(Dichotomous_Individual_Data[,c(3:38)],2,Mode_Aggregate)
+Modes_Dich<- as.data.frame(Modes_Dich)
+Modes_Dich_Clean <- Modes_Dich[,c(2,4,6,8,10,12,14,16,18,20,22,
+                            24,26,28,30,32,34,36,38,40,
+                            42,44,46,48,50,52,54,56,58,
+                            60,62,64,66,68,70,72)]
+
+rownames(Modes_Dich_Clean) <- Modes_Dich$V12.Group.1
+
+Dich_Modes_Unique <- apply(Modes_Dich_Clean, 2, unique)
+
+#there are five questions that should be removed because all the countries answered the same
+#V36, V44, V82, V83, V179, V180, V178, V243, V244, V245, V246,
+Dich_Modes_Final <- Modes_Dich_Clean[,-c(13, 21,23,24,29,30,31,33,34,35,36)]
+
+Dich_Modes_Final$V38.x[[22]]<-NA
+Dich_Modes_Final$V40.x[[22]]<-NA
+Dich_Modes_Final$V42.x[[22]]<-NA
+Dich_Modes_Final$V148.x[[16]]<-NA
+Dich_Modes_Final$V149.x[[16]]<-NA
+Dich_Modes_Final$V148.x[[50]]<-NA
+Dich_Modes_Final$V149.x[[50]]<-NA
+Dich_Modes_Final$V148.x[[56]]<-NA
+Dich_Modes_Final$V149.x[[56]]<-NA
+
+
+#Therefore our final dataset of modes is 
+Mode_Data <- merge(Nominal_Modes_Final, Dich_Modes_Final, by.x=0, by.y=0)
+rownames(Mode_Data)<- Mode_Data$Row.names
+Mode_Data_Final <- as.data.frame(Mode_Data[,c(2:37)])
+
+Mode_Data_Final <- apply(Mode_Data_Final,2,as.numeric)
+Mode_Data_Final <- apply(Mode_Data_Final,2,as.character)
+Mode_Data_Final <- as.data.frame(apply(Mode_Data_Final,2,as.factor))
+
+#there are missing values in this data frame. We can estimate those values using the same function as before which makes an estimate based on the mean of the data. 
+#install.packages("mice")
+library(mice)
+init = mice(Mode_Data_Final, maxit=0) 
+meth = init$method
+predM = init$predictorMatrix
+
+set.seed(103)
+imputed = mice(Mode_Data_Final, method=meth, predictorMatrix=predM, m=5, printFlag = FALSE)
+
+#Create a new data set with the imputed data
+Imputed_Mode_Data<- complete(imputed)
+rownames(Imputed_Mode_Data)<- Mode_Data$Row.names
+
+#Check to make sure multiple categories were used.
+Mode_Unique <- apply(Imputed_Mode_Data, 2, unique)
+```
+
+#Final Central Tendency Dataset
+```{r Imputed Mode and Median Data}
+Imputed_Mode_Median_Data <- merge(Imputed_Ordered_Data, Imputed_Mode_Data, by.x=0, by.y=0)
+Countries <-Imputed_Mode_Median_Data$Row.names
+rownames(Imputed_Mode_Median_Data)<- Countries
+Imputed_Mode_Median_Data <- Imputed_Mode_Median_Data[,c(2:190)]
+
+Imputed_Mode_Median_Data <- apply(Imputed_Mode_Median_Data,2,as.numeric)
+
+timestamp <- format(Sys.time(), "%Y%m%d_%H%M%S") 
+filename <-  paste("Imputed_Mode_Median_Data",timestamp,".csv",sep="")
+write.csv(Imputed_Mode_Median_Data, file=filename)
+```
+
+#Distribution of Central Tendency Variables
+We will now look at the distribution of the mode and median variables. This dataset is what will be analyzed in the exploratory factor analysis. We will therefore start with a normality test.
+
+##Normality of Central Tendency Variables
+```{r Normality Test of Mode and Medians}
+#install.packages("nortest")
+library("nortest")
+
+normality_test <- apply(Imputed_Mode_Median_Data, 2, ad.test)
+
+#Need to determine which variables have significant p-values
+normality_p.values <- c()
+variable_names <- colnames(Imputed_Mode_Median_Data)
+
+for(col in c(1:189)){
+  variable_normality <- normality_test[[col]]
+  p.value <- variable_normality$p.value
+  normality_p.values <- cbind(normality_p.values, p.value)
+}
+
+colnames(normality_p.values) <- variable_names
+
+#p-values less than 0.05 mean the variables are non-normal
+nonnormal_variables <- t(normality_p.values)
+nonnormal_variables[nonnormal_variables > 0.01] = NA
+nonnormal_variables <- as.data.frame(t(na.omit(nonnormal_variables)))
+
+normal_variables <- t(normality_p.values)
+normal_variables[normal_variables < 0.01] = NA
+normal_variables <- as.data.frame(t(na.omit(normal_variables)))
+```
+
+#Frequency Table of Central Tendency Variables
+Let's look at the distributions of the modes and medians by question. The histograms and other plots were done in excel.
+```{r Mode and Median Frequency}
+freq=table(col(Imputed_Mode_Median_Data), as.matrix(Imputed_Mode_Median_Data))
+Names=colnames(Imputed_Mode_Median_Data)  # create list of names
+data=data.frame(cbind(freq),Names)   # combine them into a data frame
+data=data[,c(12,1,2,3,4,5,6,7,8,9,10,11)] # sort columns
+write.csv(data, "Frequency_mode_median.csv")
+```
+
+
 
