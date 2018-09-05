@@ -6,7 +6,7 @@ output: html_document
 ---
 First we need to tell R where are the data files are stored. 
 ```{r Set Workspace}
-setwd("~/GitHub/WVS_Analysis_2018")
+setwd("C:/Users/laall/Documents/GitHub/01_Model_Development")
 ```
 
 #Importing Data
@@ -391,7 +391,7 @@ rownames(Dontknow_DF) <- country.codes
 
 #Final Categorical Data Frame Precentages
 ```{r Final Categorical Data Precentages}
-#make one DF with all the single question dataframes - There are 202 categorical variables at this point
+#make one DF with all the single question dataframes - There are 2032 categorical variables at this point
 #Questions 144, 247,254, 256 were removed beause they were coded using religion, languages, regions and ethnicities 
 #219_ESMA was removed because it was not answered by any of the 60 countries.
 #228 and 228_2 were removed because they are related to political parties in specific countries
@@ -946,7 +946,7 @@ We also want to elimnate questions with large amounts of administrative missing.
 QuestionCount50 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(Admin_DF_All[,i] >= 50) 
  QuestionCount50 <- rbind(QuestionCount50, count)
 }
@@ -958,8 +958,8 @@ abline(h=20, col="red")
 abline(h=25, col="grey")
 abline(h=30, col="blue")
 
-barplot(t(QuestionCount50[c(150:254),1]), xlab = "Question", ylab = "Number of Countries who Skipped",
-        main = "50% or Greater AdminNA", names.arg = rownames(QuestionCount50[c(150:254),]))
+barplot(t(QuestionCount50[c(150:255),1]), xlab = "Question", ylab = "Number of Countries who Skipped",
+        main = "50% or Greater AdminNA", names.arg = rownames(QuestionCount50[c(150:255),]))
 abline(h=15)
 abline(h=20, col="red")
 abline(h=25, col="grey")
@@ -970,7 +970,7 @@ abline(h=30, col="blue")
 QuestionCount75 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(Admin_DF_All[,i] >= 75) 
  QuestionCount75 <- rbind(QuestionCount75, count)
 }
@@ -982,8 +982,8 @@ abline(h=20, col="red")
 abline(h=25, col="grey")
 abline(h=30, col="blue")
 
-barplot(t(QuestionCount75[c(150:254),1]), xlab = "Question", ylab = "Number of Countries who Skipped",
-        main = "75% or Greater AdminNA", names.arg = rownames(QuestionCount75[c(150:254),]))
+barplot(t(QuestionCount75[c(150:255),1]), xlab = "Question", ylab = "Number of Countries who Skipped",
+        main = "75% or Greater AdminNA", names.arg = rownames(QuestionCount75[c(150:255),]))
 abline(h=15)
 abline(h=20, col="red")
 abline(h=25, col="grey")
@@ -994,7 +994,7 @@ abline(h=30, col="blue")
 QuestionCount90 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(Admin_DF_All[,i] >= 90) 
  QuestionCount90 <- rbind(QuestionCount90, count)
 }
@@ -1006,8 +1006,8 @@ abline(h=20, col="red")
 abline(h=25, col="grey")
 abline(h=30, col="blue")
 
-barplot(t(QuestionCount90[c(150:254),1]), xlab = "Question", ylab = "Number of Countries who Skipped",
-        main = "90% or Greater AdminNA", names.arg = rownames(QuestionCount90[c(150:254),]))
+barplot(t(QuestionCount90[c(150:255),1]), xlab = "Question", ylab = "Number of Countries who Skipped",
+        main = "90% or Greater AdminNA", names.arg = rownames(QuestionCount90[c(150:255),]))
 abline(h=15)
 abline(h=20, col="red")
 abline(h=25, col="grey")
@@ -1019,7 +1019,7 @@ abline(h=30, col="blue")
 QuestionCount100 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(Admin_DF_All[,i] == 100) 
  QuestionCount100 <- rbind(QuestionCount100, count)
 }
@@ -1031,8 +1031,8 @@ abline(h=20, col="red")
 abline(h=25, col="grey")
 abline(h=30, col="blue")
 
-barplot(t(QuestionCount100[c(150:254),1]), xlab = "Question", ylab = "Number of Countries who Skipped",
-        main = "100% AdminNA", names.arg = rownames(QuestionCount100[c(150:254),]))
+barplot(t(QuestionCount100[c(150:255),1]), xlab = "Question", ylab = "Number of Countries who Skipped",
+        main = "100% AdminNA", names.arg = rownames(QuestionCount100[c(150:255),]))
 abline(h=15)
 abline(h=20, col="red")
 abline(h=25, col="grey")
@@ -1043,7 +1043,7 @@ abline(h=30, col="blue")
 ```{r Comparison of Questions Sensitvity AdminNA}
 Comparison_Questions_AdminNA <- cbind(QuestionCount50,QuestionCount75,QuestionCount90,QuestionCount100)
 
-matplot(Comparison_Questions_AdminNA[c(1:254),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries who Skipped")
+matplot(Comparison_Questions_AdminNA[c(1:255),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries who Skipped")
 legend("topleft", legend = c("50", "75", "90", "100"), col=1:4, pch=1)
 abline(h=10)
 abline(h=20, col="red")
@@ -1051,7 +1051,7 @@ abline(h=15, col="grey")
 abline(h=30, col="blue")
 
 pdf("Comparison_Sensitivity.pdf")
-matplot(Comparison_Questions_AdminNA[c(150:254),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries who Skipped")
+matplot(Comparison_Questions_AdminNA[c(150:255),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries who Skipped")
 legend("topleft", legend = c("50", "75", "90", "100"), col=1:4, pch=1)
 abline(h=10)
 abline(h=20, col="red")
@@ -1146,7 +1146,7 @@ Let's also look at the missing responses. We can understand the amount missing b
 QuestionCount50 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(Missing_DF_All[,i] >= 50) 
  QuestionCount50 <- rbind(QuestionCount50, count)
 }
@@ -1162,7 +1162,7 @@ abline(h=30, col="blue")
 QuestionCount75 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(Missing_DF_All[,i] >= 75) 
  QuestionCount75 <- rbind(QuestionCount75, count)
 }
@@ -1178,7 +1178,7 @@ abline(h=30, col="blue")
 QuestionCount90 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(Missing_DF_All[,i] >= 90) 
  QuestionCount90 <- rbind(QuestionCount90, count)
 }
@@ -1194,7 +1194,7 @@ abline(h=30, col="blue")
 QuestionCount100 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(Missing_DF_All[,i] == 100) 
  QuestionCount100 <- rbind(QuestionCount100, count)
 }
@@ -1211,7 +1211,7 @@ abline(h=30, col="blue")
 ```{r Comparison of Questions Sensitvity Missing}
 Comparison_Questions_Missing <- cbind(QuestionCount50,QuestionCount75,QuestionCount90,QuestionCount100)
 
-matplot(Comparison_Questions_Missing[c(1:254),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries who Skipped")
+matplot(Comparison_Questions_Missing[c(1:255),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries who Skipped")
 legend("topleft", legend = c("50", "75", "90", "100"), col=1:4, pch=1)
 abline(h=10)
 abline(h=20, col="red")
@@ -1219,7 +1219,7 @@ abline(h=15, col="grey")
 abline(h=30, col="blue")
 
 pdf("Comparison_Sensitivity - Missing(-2).pdf")
-matplot(Comparison_Questions_Missing[c(1:254),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries who Skipped")
+matplot(Comparison_Questions_Missing[c(1:255),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries who Skipped")
 legend("topleft", legend = c("50", "75", "90", "100"), col=1:4, pch=1)
 abline(h=10)
 abline(h=20, col="red")
@@ -1249,7 +1249,7 @@ Let's also look at the Dont Know responses. We can understand the amount missing
 QuestionCount50 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(DontKnow_DF_All[,i] >= 50) 
  QuestionCount50 <- rbind(QuestionCount50, count)
 }
@@ -1265,7 +1265,7 @@ abline(h=30, col="blue")
 QuestionCount75 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(DontKnow_DF_All[,i] >= 75) 
  QuestionCount75 <- rbind(QuestionCount75, count)
 }
@@ -1281,7 +1281,7 @@ abline(h=30, col="blue")
 QuestionCount90 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(DontKnow_DF_All[,i] >= 90) 
  QuestionCount90 <- rbind(QuestionCount90, count)
 }
@@ -1297,7 +1297,7 @@ abline(h=30, col="blue")
 QuestionCount100 = c()
 count=0 #reset count
 
-for(i in 1:254){
+for(i in 1:255){
  count = sum(DontKnow_DF_All[,i] == 100) 
  QuestionCount100 <- rbind(QuestionCount100, count)
 }
@@ -1315,7 +1315,7 @@ This graph tells us that there were no questions where everyone (100%) in a sing
 ```{r Comparison of Questions Sensitvity DontKnow}
 Comparison_Questions_DontKnow <- cbind(QuestionCount50,QuestionCount75,QuestionCount90, QuestionCount100)
 
-matplot(Comparison_Questions_DontKnow[c(200:254),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries")
+matplot(Comparison_Questions_DontKnow[c(200:255),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries")
 legend("topleft", legend = c("50", "75", "90", "100"), col=1:4, pch=1)
 abline(h=10)
 abline(h=20, col="red")
@@ -1324,7 +1324,7 @@ abline(h=30, col="blue")
 
 
 pdf("Comparison_Sensitivity - DontKnow(-1).pdf")
-matplot(Comparison_Questions_DontKnow[c(200:254),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries")
+matplot(Comparison_Questions_DontKnow[c(200:255),c(1:4)], type = c("b"), pch=1, col=1:4, xlab = "Question", ylab = "# of Countries")
 legend("topleft", legend = c("50", "75", "90", "100"), col=1:4, pch=1)
 abline(h=10)
 abline(h=20, col="red")
@@ -1386,7 +1386,8 @@ Ordinal_Final_Precentage_DFs <- cbind(V23_Category,
 Oridnal_Question_Count <- list(V23_Category,
                                    V56_Category,V55_Category,V157_Category,V158_Category,V159_Category,
                                    V160_Category,V164_Category,V59_Category,V95_Category,V96_Category,V97_Category,
-                                   V98_Category,V99_Category,V100_Category,V101_Category,V131_Category,V132_Category,
+                                   V98_Category,V99_Category,V100_Category,V101_Category,
+                               V131_Category,V132_Category,
                                    V134_Category,V135_Category,V136_Category,V137_Category,V138_Category,
                                    V141_Category,V192_Category,V194_Category,
                                    V197_Category,V198_Category,V200_Category,V209_Category,
@@ -1416,7 +1417,7 @@ WVS_Data_Precentages2<- WVS_Data_Precentages1[, -grep("Missing", colnames(WVS_Da
 WVS_Data_Precentages3<- WVS_Data_Precentages2[, -grep("Neg1", colnames(WVS_Data_Precentages2))]
 WVS_Data_Precentages4<- WVS_Data_Precentages3[, -grep("Know", colnames(WVS_Data_Precentages3))]
 
-#write.csv(WVS_Data_Precentages, file = "WVS_Data_Percentages.csv")
+write.csv(WVS_Data_Precentages4, file = "WVS_Data_Percentages.csv")
 ```
 
 #Individual Data - Cleaned
